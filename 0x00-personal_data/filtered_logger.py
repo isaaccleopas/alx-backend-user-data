@@ -3,6 +3,8 @@
 import os
 import re
 import logging
+import mysql.connector
+from mysql.connector import MySQLConnection
 from typing import List
 
 
@@ -66,7 +68,7 @@ def main():
         rows = cursor.fetchall()
         for row in rows:
             record = map(
-                lambda x: '{}={}'.format(x[0], x[1])
+                lambda x: '{}={}'.format(x[0], x[1]),
                 zip(columns, row),
             )
             msg = '{};'.format('; '.join(list(record)))
