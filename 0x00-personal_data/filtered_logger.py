@@ -2,7 +2,6 @@
 """Filtered Logger Module"""
 import os
 import re
-import sys
 import logging
 from typing import List
 
@@ -24,18 +23,16 @@ def filter_datum(
 
 def get_logger() -> logging.Logger:
     """
-    Returns a logging.Logger object named "user_data" with specified properties.
+    Returns a logging.Logger object named
+    "user_data" with specified properties.
     """
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
-
-    stream_handler = logging.StreamHandler(sys.stdout)
-    formatter = RedactingFormatter(fields=PII_FIELDS)
+    stream_handler = logging.StreamHandler()
+    formatter = RedactingFormatter(PII_FIELDS)
     stream_handler.setFormatter(formatter)
-
     logger.addHandler(stream_handler)
-
     return logger
 
 
