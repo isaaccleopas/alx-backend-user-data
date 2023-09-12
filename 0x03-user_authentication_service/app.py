@@ -46,7 +46,7 @@ def login() -> str:
     Args:
         email (str)
         password (str)
-    Return:
+    return:
         LogIn users
     """
     email = request.form.get('email')
