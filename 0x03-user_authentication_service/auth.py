@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""auth module"""
+"""return Hash password
+"""
 from uuid import uuid4
 import uuid
 import bcrypt
@@ -9,8 +10,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from typing import Union
 
 
-def hashed_password(password: str) -> byte:
-    """Generate a random salt and hash the password
+def _hash_password(password: str) -> bytes:
+    """Hashes the given password using bcrypt
     """
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
@@ -28,11 +29,17 @@ class Auth:
     """Auth class to interact with the authentication database.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._db = DB()
-        
+
     def register_user(self, email: str, password: str) -> User:
-        """Uses email and paswrd to register
+        """
+        Args:
+            email (str)
+            password (str)
+        Return:
+            newly created user
+            else raise ValueError
         """
         try:
             self._db.find_user_by(email=email)
@@ -44,7 +51,7 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """
-        Validate a user's login credentials and
+        validates users
         Return:
             True if credentials are correct,
         """
@@ -60,7 +67,6 @@ class Auth:
     def create_session(self, email: str) -> Union[None, str]:
         """
         Return: the session ID.
-        and store it in the database
         """
         try:
             user = self._db.find_user_by(email=email)
